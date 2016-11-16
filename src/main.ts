@@ -1,7 +1,6 @@
 'use strict';
 
 import { Content } from './model/content';
-import { defer } from './utils';
 
 class Editor
 {
@@ -14,6 +13,7 @@ class Editor
         this.content = Content.fromDOM( this.contentEl );
 
         this.bindUpdate();
+        this.update();
     }
 
     update()
