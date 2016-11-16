@@ -60,6 +60,15 @@ class Editor
                 let focusOffset = selection.focusOffset + siblingOffset( focusNode ) + focusData.parentOffset;
                 let focusIndex = this.content.getIndexById( focusData.parentNode.getAttribute( 'name' ) );
                 console.log( "Selection Start:", focusIndex, focusOffset );
+                if ( ( focusIndex < anchorIndex ) || ( focusIndex === anchorIndex && focusOffset < anchorOffset ) )
+                {
+                    let tmpIndex = anchorIndex;
+                    let tmpOffset = anchorOffset;
+                    anchorIndex = focusIndex;
+                    anchorOffset = focusOffset;
+                    focusIndex = tmpIndex;
+                    focusOffset = tmpOffset;
+                }
                 if ( anchorIndex === focusIndex )
                 {
                     this.content.list[anchorIndex].format( anchorOffset, focusOffset, MarkupType.Bold );
@@ -117,6 +126,15 @@ class Editor
                 let focusOffset = selection.focusOffset + siblingOffset( focusNode ) + focusData.parentOffset;
                 let focusIndex = this.content.getIndexById( focusData.parentNode.getAttribute( 'name' ) );
                 console.log( "Selection Start:", focusIndex, focusOffset );
+                if ( ( focusIndex < anchorIndex ) || ( focusIndex === anchorIndex && focusOffset < anchorOffset ) )
+                {
+                    let tmpIndex = anchorIndex;
+                    let tmpOffset = anchorOffset;
+                    anchorIndex = focusIndex;
+                    anchorOffset = focusOffset;
+                    focusIndex = tmpIndex;
+                    focusOffset = tmpOffset;
+                }
                 if ( anchorIndex === focusIndex )
                 {
                     this.content.list[anchorIndex].format( anchorOffset, focusOffset, MarkupType.Italic );
@@ -174,6 +192,15 @@ class Editor
                 let focusOffset = selection.focusOffset + siblingOffset( focusNode ) + focusData.parentOffset;
                 let focusIndex = this.content.getIndexById( focusData.parentNode.getAttribute( 'name' ) );
                 console.log( "Selection Start:", focusIndex, focusOffset );
+                if ( ( focusIndex < anchorIndex ) || ( focusIndex === anchorIndex && focusOffset < anchorOffset ) )
+                {
+                    let tmpIndex = anchorIndex;
+                    let tmpOffset = anchorOffset;
+                    anchorIndex = focusIndex;
+                    anchorOffset = focusOffset;
+                    focusIndex = tmpIndex;
+                    focusOffset = tmpOffset;
+                }
                 if ( anchorIndex === focusIndex )
                 {
                     this.content.list[anchorIndex].clear( anchorOffset, focusOffset );
