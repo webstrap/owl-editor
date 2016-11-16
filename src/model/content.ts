@@ -44,4 +44,28 @@ export class Content
             this.list.push( paragraph );
         }
     }
+
+    updateParagraph( paragraph: Paragraph, index: number )
+    {
+        if ( 0 <= index && index < this.list.length )
+        {
+            this.list[index] = paragraph;
+        }
+        else
+        {
+            console.error( 'Content.updateParagraph: index out of bound' );
+        }
+    }
+
+    removeParagraph( index: number )
+    {
+        if ( 0 <= index && index < this.list.length )
+        {
+            this.list.splice( index, 1 );
+        }
+        else
+        {
+            console.error( 'Content.removeParagraph: index out of bound' );
+        }
+    }
 }

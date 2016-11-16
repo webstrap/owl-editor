@@ -10,7 +10,14 @@ export enum ParagraphType {
 }
 
 export class Paragraph {
-    text    : String;
+    text    : string;
     markups : Array<Markup>;
     type    : ParagraphType;
+
+    constructor( text: string, markups: Array<Markup>, type: ParagraphType )
+    {
+        this.text = text;
+        this.markups = markups;
+        this.type = type;
+    }
 }
