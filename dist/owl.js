@@ -4,8 +4,15 @@
     (factory());
 }(this, (function () { 'use strict';
 
+var Content = (function () {
+    function Content() {
+    }
+    return Content;
+}());
+
 var Editor = (function () {
     function Editor() {
+        this.content = new Content;
         this.contentEl = document.getElementById('content');
     }
     return Editor;

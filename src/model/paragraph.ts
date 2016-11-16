@@ -9,8 +9,8 @@ export enum ParagraphType {
     Cite,
 }
 
-export interface Paragraph {
-    text: String,
-    markups: Array<Markup>,
-    type: ParagraphType,
+export class Paragraph {
+    text    : String;
+    markups : Array<Markup>;
+    type 	: ParagraphType;
 }

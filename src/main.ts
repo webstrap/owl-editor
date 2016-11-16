@@ -1,12 +1,16 @@
 'use strict';
 
+import { Content } from './model/content';
+
 
 class Editor
 {
-    contentEl: Element;
+    contentEl : Element;
+    content   : Content;
 
     constructor()
     {
+        this.content = new Content;
         this.contentEl = document.getElementById( 'content' );
     }
 }
