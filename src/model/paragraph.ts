@@ -69,5 +69,17 @@ export class Paragraph {
         return pTag;
     }
 
+    createBuffer(): Uint8Array
+    {
+        let buffer = new Uint8Array( this.text.length );
 
+        for ( let markup of this.markups )
+        {
+            for ( let cursor = markup.start; cursor <= markup.end; cursor++ )
+            {
+                buffer[cursor] |= markup.type; 
+            }
+        }
+        return buffer;
+    }
 }
