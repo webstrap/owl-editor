@@ -8,24 +8,49 @@ export class Content
     list: Array<Paragraph>;
     map: Map<Paragraph>;
 
-    constructor( list, map )
+    /**
+     * @param {Array<Paragraph>} list
+     */
+    constructor( list: Array<Paragraph> )
     {
+        const map = {};
+
+        for ( const paragraph of list )
+        {
+            map[ paragraph.id ] = paragraph;
+        }
+
         this.list = list;
         this.map = map;
     }
 
+    /**
+     * @param  {Element} rootEl
+     *
+     * @return {Content}
+     */
     static fromDOM( rootEl: Element ): Content
     {
         const { children } = rootEl;
 
+        const list = [];
+
         for ( let i = 0, l = children.length; i < l; i++ )
         {
             const child = children[ i ];
+
+            const paragraph = Paragraph.fromDOM( child );
+
+            list.push( paragraph );
         }
 
-        return new Content( [], {} );
+        return new Content( list );
     }
 
+    /**
+     * @param {Paragraph} paragraph
+     * @param {number} index
+     */
     insertParagraph( paragraph: Paragraph, index?: number )
     {
         if ( index != null )
