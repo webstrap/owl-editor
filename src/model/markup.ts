@@ -1,15 +1,38 @@
 'use strict';
 
-export enum MarkupType {
+export enum MarkupType
+{
+    Link,
     Bold,
     Italic,
     Underline,
-    Link,
 }
 
-export interface Markup {
-    start : number,
-    end   : number,
-    type  : MarkupType,
-    url   : string,
+export class Markup
+{
+    start : number;
+    end   : number;
+    type  : MarkupType;
+    url   : string;
+    
+
+    /**
+    * Compares 2 {Markup} objects first by start index 
+    * (lower index comes first) and on equality it uses
+    * the {MarkypType} as a second comparator by it's
+    * precedence.
+    * 
+    * @param {Markup} a
+    * @param {Markup} b
+    * @return {number} -1, 0, 1 for a being smaller, equal or greater than b 
+    */
+    static comparator( a: Markup, b: Markup ): number
+    {
+        const deltaStart = a.start - b.start;
+        if ( deltaStart === 0 )
+        {
+            return a.type - b.type; 
+        }
+        return deltaStart;
+    }
 }
