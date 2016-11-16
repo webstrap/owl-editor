@@ -8,8 +8,8 @@ export enum MarkupType {
 }
 
 export interface Markup {
-    start : Number,
-    end   : Number,
+    start : number,
+    end   : number,
     type  : MarkupType,
-    url   : String,
+    url   : string,
 }

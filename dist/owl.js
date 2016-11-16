@@ -14,7 +14,19 @@ var Editor = (function () {
     function Editor() {
         this.content = new Content;
         this.contentEl = document.getElementById('content');
+        this.bindUpdate();
     }
+    Editor.prototype.bindUpdate = function () {
+        var update = this.update.bind(this);
+        var timer = 0;
+        this.contentEl.addEventListener('input', function () {
+            clearTimeout(timer);
+            timer = setTimeout(update, 300);
+        });
+    };
+    Editor.prototype.update = function () {
+        console.log('update!');
+    };
     return Editor;
 }());
 window['editor'] = new Editor;
