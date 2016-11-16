@@ -1,13 +1,7 @@
 'use strict';
 
 import { Buffer } from './Buffer';
-import { Markup } from '../model/markup';
-
-
-export const BOLD_FLAG      = 0b001;
-export const ITALIC_FLAG    = 0b010;
-export const UNDERLINE_FLAG = 0b100;
-
+import { Markup, MarkupType } from '../model/markup';
 
 export class DOMParser {
     flags = 0;
@@ -49,16 +43,16 @@ export class DOMParser {
             {
                 case 'b':
                 case 'strong':
-                    this.flags |= BOLD_FLAG;
+                    this.flags |= MarkupType.Bold;
                     break;
 
                 case 'i':
                 case 'em':
-                    this.flags |= ITALIC_FLAG;
+                    this.flags |= MarkupType.Italic;
                     break;
 
                 case 'u':
-                    this.flags |= UNDERLINE_FLAG;
+                    this.flags |= MarkupType.Underline;
                     break;
             }
 
@@ -88,10 +82,11 @@ export class DOMParser {
 
             if ( flags !== current )
             {
-                if ( Boolean( flags & BOLD_FLAG ) !== bold )
+                if ( bold && flags & MarkupType.Bold )
                 {
 
                 }
+
             }
         }
     }

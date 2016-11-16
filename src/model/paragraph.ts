@@ -3,7 +3,6 @@
 import { Markup }                                 from './markup';
 import { createId, sortArray }                    from '../utils/misc';
 import { Buffer }                                 from '../utils/Buffer';
-import { BOLD_FLAG, ITALIC_FLAG, UNDERLINE_FLAG } from '../utils/DOMParser';
 import { DOMParser }                              from '../utils/DOMParser';
 
 export enum ParagraphType {
