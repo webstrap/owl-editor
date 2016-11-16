@@ -95,4 +95,19 @@ export class Content
             console.error( 'Content.removeParagraph: index out of bound' );
         }
     }
+
+    render( root: Element )
+    {
+        let node;
+
+        while ( node = root.firstChild )
+        {
+            root.removeChild( root.firstChild );
+        }
+
+        for ( const paragraph of this.list )
+        {
+            root.appendChild( paragraph.toDOM() );
+        }
+    }
 }

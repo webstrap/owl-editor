@@ -27,6 +27,7 @@ class Editor
             const end = Number( this.endFld.value );
 
             this.content.list[0].format( start, end, MarkupType.Bold );
+            this.content.render( this.contentEl );
         };
 
         this.italicBtn.onclick = () =>
@@ -35,6 +36,7 @@ class Editor
             const end = Number( this.endFld.value );
 
             this.content.list[0].format( start, end, MarkupType.Italic );
+            this.content.render( this.contentEl );
         };
 
         this.clearBtn.onclick = () =>
@@ -43,6 +45,7 @@ class Editor
             const end = Number( this.endFld.value );
 
             this.content.list[0].clear( start, end );
+            this.content.render( this.contentEl );
         };
     }
 

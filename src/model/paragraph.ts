@@ -49,6 +49,8 @@ export class Paragraph {
             if ( flag !== buffer[cursor] )
             {
                 const changeFlag = flag ^ buffer[cursor];
+                flag = buffer[cursor];
+
                 // if the Link bit changed
                 if ( changeFlag & MarkupType.Bold )
                 {
@@ -68,7 +70,7 @@ export class Paragraph {
                         openNodes.push( iTag );
                     }
                 }
-                
+
                 if ( changeFlag & MarkupType.Italic )
                 {
                     if ( !( flag & MarkupType.Italic ) )
@@ -81,7 +83,7 @@ export class Paragraph {
                             tag.appendChild(textNode);
                             textOffset = cursor;
                         }
-                        while( tag.tagName != 'i' )
+                        while( tag.tagName.toLowerCase() != 'i' )
                         {
                             tmpStack.unshift( document.createElement( tag.tagName ) );
 
@@ -92,7 +94,7 @@ export class Paragraph {
                         }
                         const tmp = openNodes.pop();
                         tmp.appendChild( tag );
-                    } 
+                    }
                 }
 
                 if ( changeFlag & MarkupType.Bold )
@@ -107,7 +109,7 @@ export class Paragraph {
                             tag.appendChild(textNode);
                             textOffset = cursor;
                         }
-                        while( tag.tagName != 'b' )
+                        while( tag.tagName.toLowerCase() != 'b' )
                         {
                            tmpStack.unshift( document.createElement( tag.tagName ) );
 
@@ -118,11 +120,13 @@ export class Paragraph {
                         }
                         const tmp = openNodes.pop();
                         tmp.appendChild( tag );
-                    } 
+                    }
                 }
             }
 
         }
+
+        console.log( pTag );
 
         return pTag;
     }
