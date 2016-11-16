@@ -1,0 +1,23 @@
+{
+  "name": "owl-editor",
+  "version": "0.1.0",
+  "description": "Text Editor with solid data model to have a consistent behavior",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/styladev/owl-editor.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/styladev/owl-editor/issues"
+  },
+  "homepage": "https://github.com/styladev/owl-editor#readme",
+  "devDependencies": {
+    "rollup": "0.36.3",
+    "typescript": "2.0.10"
+  }
+}
