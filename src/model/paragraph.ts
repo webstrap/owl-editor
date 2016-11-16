@@ -172,9 +172,8 @@ export class Paragraph {
             buffer[ i ] |= type;
         }
 
-        console.log( 'formatted', buffer );
-
         this.markups = DOMParser.createFormattingMarkup( buffer );
+        console.log( 'formatted', this.markups, buffer );
     }
 
     clear( start, end )
@@ -186,8 +185,7 @@ export class Paragraph {
             buffer[ i ] = 0;
         }
 
-        console.log( 'cleared', buffer );
-
         this.markups = DOMParser.createFormattingMarkup( buffer );
+        console.log( 'cleared', this.markups, buffer );
     }
 }
