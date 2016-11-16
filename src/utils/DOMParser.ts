@@ -17,6 +17,7 @@ export class DOMParser {
     constructor( node: Node )
     {
         this.traverse( node );
+        this.markups = DOMParser.createFormattingMarkup( this.buffer.asUint8Array() );
     }
 
     traverse( node: Node )
@@ -67,27 +68,69 @@ export class DOMParser {
         }
     }
 
-    createFormattingMarkup()
+    static createFormattingMarkup( buffer: Uint8Array ): Array<Markup>
     {
-        let bold = false;
-        let italic = false;
-        let underline = false;
+        const markups = [];
+
+        let boldStart: number | null = null;
+        let italicStart: number | null = null;
+        let underlineStart: number | null = null;
 
         let current = 0;
-        const buffer = this.buffer.asUint8Array();
+        let index = 0;
 
-        for ( let i = 0, l = buffer.length; i < l ; i++ )
+        for ( const l = buffer.length; index <= l ; index++ )
         {
-            const flags = buffer[ i ];
+            const flags = index === l ? 0 : buffer[ index ];
 
             if ( flags !== current )
             {
-                if ( bold && flags & MarkupType.Bold )
+                if ( boldStart !== null )
                 {
+                    if ( !( flags & MarkupType.Bold ) )
+                    {
+                        markups.push( new Markup( boldStart, index, MarkupType.Bold ) );
 
+                        boldStart = null;
+                    }
+                }
+                else if ( flags & MarkupType.Bold )
+                {
+                    boldStart = index;
                 }
 
+                if ( italicStart !== null )
+                {
+                    if ( !( flags & MarkupType.Italic ) )
+                    {
+                        markups.push( new Markup( italicStart, index, MarkupType.Italic ) );
+
+                        italicStart = null;
+                    }
+                }
+                else if ( flags & MarkupType.Italic )
+                {
+                    italicStart = index;
+                }
+
+                if ( underlineStart !== null )
+                {
+                    if ( !( flags & MarkupType.Italic ) )
+                    {
+                        markups.push( new Markup( underlineStart, index, MarkupType.Italic ) );
+
+                        underlineStart = null;
+                    }
+                }
+                else if ( flags & MarkupType.Underline )
+                {
+                    underlineStart = index;
+                }
+
+                current = flags;
             }
         }
+
+        return markups;
     }
 }

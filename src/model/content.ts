@@ -41,6 +41,8 @@ export class Content
 
             const paragraph = Paragraph.fromDOM( child );
 
+            console.log( 'recreated buffer', paragraph.createBuffer() );
+
             list.push( paragraph );
         }
 
