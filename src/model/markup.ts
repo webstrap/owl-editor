@@ -13,8 +13,15 @@ export class Markup
     start : number;
     end   : number;
     type  : MarkupType;
-    url   : string;
+    url   : string | void;
 
+    constructor( start: number, end: number, type: MarkupType, url?: string )
+    {
+        this.start = start;
+        this.end   = end;
+        this.type  = type;
+        this.url   = url;
+    }
 
     /**
     * Compares 2 {Markup} objects first by start index
