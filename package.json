@@ -4,8 +4,9 @@
   "description": "Text Editor with solid data model to have a consistent behavior",
   "main": "dist/owl.js",
   "scripts": {
-    "build": "npm run build-js",
-    "build-js": "tsc && rollup -n owl -f umd ts-built/main.js -o dist/owl.js && rm -rf ts-built",
+    "build": "npm run build:js",
+    "build:js": "tsc && rollup -n owl -f umd ts-built/main.js -o dist/owl.js && rm -rf ts-built",
+    "serve": "instant -p 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/styladev/owl-editor#readme",
   "devDependencies": {
+    "instant-server": "2.0.0",
     "rollup": "0.36.3",
     "typescript": "2.0.10"
   }
