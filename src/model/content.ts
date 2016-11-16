@@ -1,16 +1,29 @@
 'use strict';
 
-import { Paragraph } from './paragraph';
+import { Paragraph, ParagraphType } from './paragraph';
 import { Map } from '../utils';
 
-export class Content 
+export class Content
 {
-	list: Array<Paragraph>;
-	map: Map<Paragraph>;
+    list: Array<Paragraph>;
+    map: Map<Paragraph>;
 
-    constructor()
+    constructor( list, map )
     {
+        this.list = list;
+        this.map = map;
+    }
 
+    static fromDOM( rootEl: Element ): Content
+    {
+        const { children } = rootEl;
+
+        for ( let i = 0, l = children.length; i < l; i++ )
+        {
+            const child = children[ i ];
+        }
+
+        return new Content( [], {} );
     }
 
     insertParagraph( paragraph: Paragraph, index?: number )
@@ -26,7 +39,7 @@ export class Content
                 console.error( 'Content.insertParagraph: index out of bound' );
             }
         }
-        else 
+        else
         {
             this.list.push( paragraph );
         }

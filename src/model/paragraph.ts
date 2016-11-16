@@ -12,5 +12,5 @@ export enum ParagraphType {
 export class Paragraph {
     text    : String;
     markups : Array<Markup>;
-    type 	: ParagraphType;
+    type    : ParagraphType;
 }

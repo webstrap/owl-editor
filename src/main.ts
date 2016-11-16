@@ -10,10 +10,15 @@ class Editor
 
     constructor()
     {
-        this.content = new Content;
         this.contentEl = document.getElementById( 'content' );
+        this.content = Content.fromDOM( this.contentEl );
 
         this.bindUpdate();
+    }
+
+    update()
+    {
+        console.log( 'update!' );
     }
 
     bindUpdate()
@@ -27,11 +32,6 @@ class Editor
             clearTimeout( timer );
             timer = setTimeout( update, 300 );
         } );
-    }
-
-    update()
-    {
-        console.log( 'update!' );
     }
 }
 
