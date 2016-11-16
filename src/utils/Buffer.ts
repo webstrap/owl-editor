@@ -1,19 +1,5 @@
 'use strict';
 
-export interface Map<T>
-{
-    [ K: string ]: T;
-}
-
-
-let counter = 0;
-
-export function createId(): string
-{
-    return `c${ ++counter }`;
-}
-
-
 export class Buffer
 {
     capacity: number;
@@ -67,9 +53,4 @@ export class Buffer
     {
         return this.buf.subarray( 0, this.length );
     }
-}
-
-export function sortArray<T>( array: Array<T>, key: string )
-{
-    array.sort( ( a, b ) => a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0 );
 }

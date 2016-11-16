@@ -1,7 +1,7 @@
 'use strict';
 
 import { Paragraph, ParagraphType } from './paragraph';
-import { Map } from '../utils';
+import { Map } from '../utils/misc';
 
 export class Content
 {
