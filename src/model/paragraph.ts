@@ -1,9 +1,9 @@
 'use strict';
 
-import { Markup }                                 from './markup';
-import { createId, sortArray }                    from '../utils/misc';
-import { Buffer }                                 from '../utils/Buffer';
-import { DOMParser }                              from '../utils/DOMParser';
+import { Markup, MarkupType }  from './markup';
+import { createId, sortArray } from '../utils/misc';
+import { Buffer }              from '../utils/Buffer';
+import { DOMParser }           from '../utils/DOMParser';
 
 export enum ParagraphType {
     Text,
@@ -77,9 +77,38 @@ export class Paragraph {
         {
             for ( let cursor = markup.start; cursor <= markup.end; cursor++ )
             {
-                buffer[cursor] |= markup.type; 
+                buffer[cursor] |= markup.type;
             }
         }
+
         return buffer;
+    }
+
+    format( start: number, end: number, type: MarkupType )
+    {
+        const buffer = this.createBuffer();
+
+        for ( let i = start; i < end; i++ )
+        {
+            buffer[ i ] |= type;
+        }
+
+        console.log( 'formatted', buffer );
+
+        this.markups = DOMParser.createFormattingMarkup( buffer );
+    }
+
+    clear( start, end )
+    {
+        const buffer = this.createBuffer();
+
+        for ( let i = start; i < end; i++ )
+        {
+            buffer[ i ] = 0;
+        }
+
+        console.log( 'cleared', buffer );
+
+        this.markups = DOMParser.createFormattingMarkup( buffer );
     }
 }

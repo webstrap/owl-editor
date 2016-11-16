@@ -1,24 +1,54 @@
 'use strict';
 
 import { Content } from './model/content';
+import { MarkupType } from './model/markup';
 
 class Editor
 {
-    contentEl : Element;
     content   : Content;
+
+    contentEl = document.getElementById( 'content' );
+
+    startFld = <HTMLInputElement>document.getElementById( 'start' );
+    endFld = <HTMLInputElement>document.getElementById( 'end' );
+
+    boldBtn = <HTMLButtonElement>document.getElementById( 'bold' );
+    italicBtn = <HTMLButtonElement>document.getElementById( 'italic' );
+    clearBtn = <HTMLButtonElement>document.getElementById( 'clear' );
 
     constructor()
     {
-        this.contentEl = document.getElementById( 'content' );
-        this.content = Content.fromDOM( this.contentEl );
-
         this.bindUpdate();
         this.update();
+
+        this.boldBtn.onclick = () =>
+        {
+            const start = Number( this.startFld.value );
+            const end = Number( this.endFld.value );
+
+            this.content.list[0].format( start, end, MarkupType.Bold );
+        };
+
+        this.italicBtn.onclick = () =>
+        {
+            const start = Number( this.startFld.value );
+            const end = Number( this.endFld.value );
+
+            this.content.list[0].format( start, end, MarkupType.Italic );
+        };
+
+        this.clearBtn.onclick = () =>
+        {
+            const start = Number( this.startFld.value );
+            const end = Number( this.endFld.value );
+
+            this.content.list[0].clear( start, end );
+        };
     }
 
     update()
     {
-        console.log( 'update!' );
+        this.content = Content.fromDOM( this.contentEl );
     }
 
     bindUpdate()

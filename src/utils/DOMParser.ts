@@ -17,7 +17,7 @@ export class DOMParser {
     constructor( node: Node )
     {
         this.traverse( node );
-        this.createFormattingMarkup();
+        this.markups = DOMParser.createFormattingMarkup( this.buffer.asUint8Array() );
     }
 
     traverse( node: Node )
@@ -68,15 +68,15 @@ export class DOMParser {
         }
     }
 
-    createFormattingMarkup()
+    static createFormattingMarkup( buffer: Uint8Array ): Array<Markup>
     {
+        const markups = [];
+
         let boldStart: number | null = null;
         let italicStart: number | null = null;
         let underlineStart: number | null = null;
 
         let current = 0;
-        const buffer = this.buffer.asUint8Array();
-
         let index = 0;
 
         for ( const l = buffer.length; index <= l ; index++ )
@@ -89,7 +89,7 @@ export class DOMParser {
                 {
                     if ( !( flags & MarkupType.Bold ) )
                     {
-                        this.markups.push( new Markup( boldStart, index, MarkupType.Bold ) );
+                        markups.push( new Markup( boldStart, index, MarkupType.Bold ) );
 
                         boldStart = null;
                     }
@@ -103,7 +103,7 @@ export class DOMParser {
                 {
                     if ( !( flags & MarkupType.Italic ) )
                     {
-                        this.markups.push( new Markup( italicStart, index, MarkupType.Italic ) );
+                        markups.push( new Markup( italicStart, index, MarkupType.Italic ) );
 
                         italicStart = null;
                     }
@@ -117,7 +117,7 @@ export class DOMParser {
                 {
                     if ( !( flags & MarkupType.Italic ) )
                     {
-                        this.markups.push( new Markup( underlineStart, index, MarkupType.Italic ) );
+                        markups.push( new Markup( underlineStart, index, MarkupType.Italic ) );
 
                         underlineStart = null;
                     }
@@ -130,5 +130,7 @@ export class DOMParser {
                 current = flags;
             }
         }
+
+        return markups;
     }
 }
