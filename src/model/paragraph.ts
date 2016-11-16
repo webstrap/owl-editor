@@ -38,7 +38,7 @@ export class Paragraph {
     toDOM(): Element
     {
         const pTag = document.createElement( 'p' );
-
+        pTag.setAttribute( 'name', this.id );
         let buffer = this.createBuffer();
         let flag = 0;
         let textOffset = 0;
