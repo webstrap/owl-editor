@@ -1,12 +1,11 @@
 'use strict';
 
 enum MarkupType {
-    Bold      = 1,
-    Italic    = 2,
-    Underline = 3,
-    Link      = 4,
+    Bold,
+    Italic,
+    Underline,
+    Link,
 }
-
 
 interface Markup {
     start: Number,
@@ -15,10 +14,10 @@ interface Markup {
 }
 
 enum ParagraphType {
-    Text  = 1,
-    Image = 2,
-    Title = 3,
-    Cite  = 4,
+    Text,
+    Image,
+    Title,
+    Cite,
 }
 
 interface Paragraph {
@@ -33,3 +32,5 @@ function contentFromDOM( rootEl: Element ): Content
 {
     return [];
 }
+
+console.log( 'Herrow owl!' );

@@ -2,8 +2,10 @@
   "name": "owl-editor",
   "version": "0.1.0",
   "description": "Text Editor with solid data model to have a consistent behavior",
-  "main": "src/main.js",
+  "main": "dist/owl.js",
   "scripts": {
+    "build": "npm run build-js",
+    "build-js": "tsc && rollup -n owl -f umd ts-built/main.js -o dist/owl.js && rm -rf ts-built",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
