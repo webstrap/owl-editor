@@ -17,6 +17,7 @@ export class Paragraph {
     text    : string;
     markups : Array<Markup>;
     type    : ParagraphType;
+    buffer  : Uint8Array;
 
     constructor( text: string, markups: Array<Markup>, type: ParagraphType )
     {
@@ -24,6 +25,7 @@ export class Paragraph {
         this.text = text;
         this.markups = markups;
         this.type = type;
+        this.buffer = this.createBuffer();
     }
 
     static fromDOM( node: Node ): Paragraph
@@ -138,10 +140,21 @@ export class Paragraph {
 
         }
         
-        if ( textOffset < this.text.length )
+        let open = openNodes.pop() 
+        while ( open )
         {
-            let textNode = document.createTextNode( this.text.substring( textOffset, this.text.length ));
-            pTag.appendChild( textNode );
+            if ( textOffset < this.text.length )
+            {
+                let textNode = document.createTextNode( this.text.substring( textOffset, this.text.length ));
+                open.appendChild( textNode );
+                textOffset = this.text.length;
+            }
+            const tmp = openNodes.pop();
+            if ( tmp )
+            {
+                tmp.appendChild( open );
+            }
+            open=tmp;
         }
         console.log( pTag );
 
@@ -165,9 +178,10 @@ export class Paragraph {
 
     format( start: number, end: number, type: MarkupType )
     {
+        const localEnd = end || this.text.length;
         const buffer = this.createBuffer();
 
-        for ( let i = start; i < end; i++ )
+        for ( let i = start; i < localEnd; i++ )
         {
             buffer[ i ] |= type;
         }
@@ -178,9 +192,10 @@ export class Paragraph {
 
     clear( start, end )
     {
+        const localEnd = end || this.text.length;
         const buffer = this.createBuffer();
 
-        for ( let i = start; i < end; i++ )
+        for ( let i = start; i < localEnd; i++ )
         {
             buffer[ i ] = 0;
         }
