@@ -56,12 +56,14 @@ class Editor
                     return { parentOffset, parentNode };
                 }
                 let anchorData = parentData( anchorNode );
-                let pOffset = selection.anchorOffset + siblingOffset( anchorNode ) + anchorData.parentOffset;
-                console.log( "Selection Start:", anchorData.parentNode.getAttribute('name'), pOffset );
+                let anchorOffset = selection.anchorOffset + siblingOffset( anchorNode ) + anchorData.parentOffset;
+                let anchorIndex = this.content.getIndexById( anchorData.parentNode.getAttribute( 'name' ) );
+                console.log( "Selection Start:", anchorIndex, anchorOffset );
 
                 let focusData = parentData( focusNode );
-                pOffset = selection.focusOffset + siblingOffset( focusNode ) + focusData.parentOffset;
-                console.log( "Selection Start:", focusData.parentNode.getAttribute('name'), pOffset );
+                let focusOffset = selection.focusOffset + siblingOffset( focusNode ) + focusData.parentOffset;
+                let focusIndex = this.content.getIndexById( focusData.parentNode.getAttribute( 'name' ) );
+                console.log( "Selection Start:", focusIndex, focusOffset );
             }
             this.content.list[0].format( start, end, MarkupType.Bold );
             this.content.render( this.contentEl );

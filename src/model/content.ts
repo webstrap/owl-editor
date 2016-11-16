@@ -49,6 +49,19 @@ export class Content
         return new Content( list );
     }
 
+    getIndexById( id: string): number
+    {
+        for ( let i = 0; i < this.list.length; i++ )
+        {
+            if ( this.list[i].id === id )
+            {
+                return i;
+            }
+        }
+        console.error( 'Content.getIndexById: id not found' );
+        return -1;
+    }
+
     /**
      * @param {Paragraph} paragraph
      * @param {number} index
