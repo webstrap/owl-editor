@@ -41,6 +41,12 @@ export class Paragraph {
     {
         const pTag = document.createElement( 'p' );
         pTag.setAttribute( 'name', this.id );
+        if ( this.text.length === 0 )
+        {
+            pTag.innerHTML = '&nbsp;';
+            return pTag;
+        }
+
         let buffer = this.createBuffer();
         let flag = 0;
         let textOffset = 0;
