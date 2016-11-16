@@ -1,6 +1,6 @@
 'use strict';
 
-import { Markup }                                 from './markup';
+import { Markup, MarkupType }                     from './markup';
 import { createId, sortArray }                    from '../utils/misc';
 import { Buffer }                                 from '../utils/Buffer';
 import { DOMParser }                              from '../utils/DOMParser';
@@ -37,32 +37,90 @@ export class Paragraph {
 
     toDOM(): Element
     {
-        this.markups.sort( Markup.comparator );
-        const activeMarkup: Array<Markup> = [];
-        let textCursor = 0;
         const pTag = document.createElement( 'p' );
 
-        for ( let markup of this.markups )
+        let buffer = this.createBuffer();
+        let flag = 0;
+        let textOffset = 0;
+        const openNodes: Array<Element> = [ pTag ];
+
+        for ( let cursor = 0; cursor < buffer.length; cursor++ )
         {
-            // create text node without markup
-            if ( activeMarkup.length === 0 )
+            if ( flag !== buffer[cursor] )
             {
-                const subText = this.text.substring( textCursor, markup.start );
-                pTag.appendChild( document.createTextNode( subText ) );
-                textCursor = markup.start;
+                const changeFlag = flag ^ buffer[cursor];
+                // if the Link bit changed
+                if ( changeFlag & MarkupType.Bold )
+                {
+                    // is bold changed to active
+                    if ( flag & MarkupType.Bold )
+                    {
+                        const bTag = document.createElement( 'b' );
+                        openNodes.push( bTag );
+                    }
+                }
+
+                if ( changeFlag & MarkupType.Italic )
+                {
+                    if ( flag & MarkupType.Italic )
+                    {
+                        const iTag = document.createElement( 'i' );
+                        openNodes.push( iTag );
+                    }
+                }
+                
+                if ( changeFlag & MarkupType.Italic )
+                {
+                    if ( !( flag & MarkupType.Italic ) )
+                    {
+                        let tag = openNodes.pop();
+                        const tmpStack = [];
+                        if ( textOffset < cursor )
+                        {
+                            let textNode = document.createTextNode( this.text.substring( textOffset, cursor ) );
+                            tag.appendChild(textNode);
+                            textOffset = cursor;
+                        }
+                        while( tag.tagName != 'i' )
+                        {
+                            tmpStack.unshift( document.createElement( tag.tagName ) );
+
+                            const tmp = openNodes.pop();
+                            tmp.appendChild( tag );
+                            tag = tmp;
+                            Array.prototype.push.apply( openNodes, tmpStack );
+                        }
+                        const tmp = openNodes.pop();
+                        tmp.appendChild( tag );
+                    } 
+                }
+
+                if ( changeFlag & MarkupType.Bold )
+                {
+                    if ( !( flag & MarkupType.Bold ) )
+                    {
+                        let tag = openNodes.pop();
+                        const tmpStack = [];
+                        if ( textOffset < cursor )
+                        {
+                            let textNode = document.createTextNode( this.text.substring( textOffset, cursor ) );
+                            tag.appendChild(textNode);
+                            textOffset = cursor;
+                        }
+                        while( tag.tagName != 'b' )
+                        {
+                           tmpStack.unshift( document.createElement( tag.tagName ) );
+
+                            const tmp = openNodes.pop();
+                            tmp.appendChild( tag );
+                            tag = tmp;
+                            Array.prototype.push.apply( openNodes, tmpStack );
+                        }
+                        const tmp = openNodes.pop();
+                        tmp.appendChild( tag );
+                    } 
+                }
             }
-
-            const endedMarkups = activeMarkup.filter( (entry) => entry.end < markup.start );
-
-            // close all markups that ended before the current one
-            for ( let endedMarkup of endedMarkups )
-            {
-
-            }
-            sortArray( endedMarkups, 'end' );
-
-            activeMarkup.push( markup );
-
 
         }
 
