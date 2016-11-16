@@ -57,6 +57,12 @@ export class Paragraph {
                     // is bold changed to active
                     if ( flag & MarkupType.Bold )
                     {
+                        if ( textOffset < cursor )
+                        {
+                            let textNode = document.createTextNode( this.text.substring( textOffset, cursor ));
+                            openNodes[openNodes.length-1].appendChild( textNode );
+                            textOffset = cursor;
+                        }
                         const bTag = document.createElement( 'b' );
                         openNodes.push( bTag );
                     }
@@ -66,6 +72,12 @@ export class Paragraph {
                 {
                     if ( flag & MarkupType.Italic )
                     {
+                        if ( textOffset < cursor )
+                        {
+                            let textNode = document.createTextNode( this.text.substring( textOffset, cursor ));
+                            openNodes[openNodes.length-1].appendChild( textNode );
+                            textOffset = cursor;
+                        }
                         const iTag = document.createElement( 'i' );
                         openNodes.push( iTag );
                     }
@@ -90,10 +102,10 @@ export class Paragraph {
                             const tmp = openNodes.pop();
                             tmp.appendChild( tag );
                             tag = tmp;
-                            Array.prototype.push.apply( openNodes, tmpStack );
                         }
-                        const tmp = openNodes.pop();
+                        const tmp = openNodes[openNodes.length-1];
                         tmp.appendChild( tag );
+                        Array.prototype.push.apply( openNodes, tmpStack );
                     }
                 }
 
@@ -116,16 +128,21 @@ export class Paragraph {
                             const tmp = openNodes.pop();
                             tmp.appendChild( tag );
                             tag = tmp;
-                            Array.prototype.push.apply( openNodes, tmpStack );
                         }
-                        const tmp = openNodes.pop();
+                        const tmp = openNodes[openNodes.length-1];
                         tmp.appendChild( tag );
+                        Array.prototype.push.apply( openNodes, tmpStack );
                     }
                 }
             }
 
         }
-
+        
+        if ( textOffset < this.text.length )
+        {
+            let textNode = document.createTextNode( this.text.substring( textOffset, this.text.length ));
+            pTag.appendChild( textNode );
+        }
         console.log( pTag );
 
         return pTag;
@@ -137,7 +154,7 @@ export class Paragraph {
 
         for ( let markup of this.markups )
         {
-            for ( let cursor = markup.start; cursor <= markup.end; cursor++ )
+            for ( let cursor = markup.start; cursor < markup.end; cursor++ )
             {
                 buffer[cursor] |= markup.type;
             }
