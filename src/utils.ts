@@ -23,3 +23,10 @@ export function defer( func: Function, timeout: number = 300 ): Function
 		}, timeout );
 	}
 }
+
+let counter = 0;
+
+export function createId(): string
+{
+    return `c${ ++counter }`;
+}
