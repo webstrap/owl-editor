@@ -1,26 +1,23 @@
 'use strict';
 
-export enum MarkupType
-{
-    Link      = 0b0001,
-    Bold      = 0b0010,
-    Italic    = 0b0100,
+export enum MarkupType {
+    Link = 0b0001,
+    Bold = 0b0010,
+    Italic = 0b0100,
     Underline = 0b1000,
 }
 
-export class Markup
-{
-    start : number;
-    end   : number;
-    type  : MarkupType;
-    url   : string | void;
+export class Markup {
+    start: number;
+    end: number;
+    type: MarkupType;
+    url: string | void;
 
-    constructor( start: number, end: number, type: MarkupType, url?: string )
-    {
+    constructor(start: number, end: number, type: MarkupType, url?: string) {
         this.start = start;
-        this.end   = end;
-        this.type  = type;
-        this.url   = url;
+        this.end = end;
+        this.type = type;
+        this.url = url;
     }
 
     /**
@@ -33,11 +30,9 @@ export class Markup
     * @param {Markup} b
     * @return {number} -1, 0, 1 for a being smaller, equal or greater than b
     */
-    static comparator( a: Markup, b: Markup ): number
-    {
+    static comparator(a: Markup, b: Markup): number {
         const deltaStart = a.start - b.start;
-        if ( deltaStart === 0 )
-        {
+        if (deltaStart === 0) {
             return a.type - b.type;
         }
         return deltaStart;

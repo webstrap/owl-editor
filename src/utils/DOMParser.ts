@@ -14,34 +14,29 @@ export class DOMParser {
     linkUrl: string | void;
     linkStart = 0;
 
-    constructor( node: Node )
-    {
-        this.traverse( node );
-        this.markups = DOMParser.createFormattingMarkup( this.buffer.asUint8Array() );
+    constructor(node: Node) {
+        this.traverse(node);
+        this.markups = DOMParser.createFormattingMarkup(this.buffer.asUint8Array());
     }
 
-    traverse( node: Node )
-    {
-        if ( node.nodeType === Node.TEXT_NODE )
-        {
+    traverse(node: Node) {
+        if (node.nodeType === Node.TEXT_NODE) {
             const content = node.textContent;
             const len = content.length;
 
             this.content += node.textContent;
             this.index += len;
-            this.buffer.fill( this.flags, len );
+            this.buffer.fill(this.flags, len);
 
             return;
         }
 
-        if ( node.nodeType == Node.ELEMENT_NODE )
-        {
+        if (node.nodeType == Node.ELEMENT_NODE) {
             const tag = (<Element>node).tagName.toLowerCase();
 
             const flagsBefore = this.flags;
 
-            switch ( tag )
-            {
+            switch (tag) {
                 case 'b':
                 case 'strong':
                     this.flags |= MarkupType.Bold;
@@ -59,17 +54,15 @@ export class DOMParser {
 
             const children = node.childNodes;
 
-            for ( let i = 0, l = children.length; i < l; i++ )
-            {
-                this.traverse( children[ i ] );
+            for (let i = 0, l = children.length; i < l; i++) {
+                this.traverse(children[i]);
             }
 
             this.flags = flagsBefore;
         }
     }
 
-    static createFormattingMarkup( buffer: Uint8Array ): Array<Markup>
-    {
+    static createFormattingMarkup(buffer: Uint8Array): Array<Markup> {
         const markups = [];
 
         let boldStart: number | null = null;
@@ -79,51 +72,40 @@ export class DOMParser {
         let current = 0;
         let index = 0;
 
-        for ( const l = buffer.length; index <= l ; index++ )
-        {
-            const flags = index === l ? 0 : buffer[ index ];
+        for (const l = buffer.length; index <= l; index++) {
+            const flags = index === l ? 0 : buffer[index];
 
-            if ( flags !== current )
-            {
-                if ( boldStart !== null )
-                {
-                    if ( !( flags & MarkupType.Bold ) )
-                    {
-                        markups.push( new Markup( boldStart, index, MarkupType.Bold ) );
+            if (flags !== current) {
+                if (boldStart !== null) {
+                    if (!(flags & MarkupType.Bold)) {
+                        markups.push(new Markup(boldStart, index, MarkupType.Bold));
 
                         boldStart = null;
                     }
                 }
-                else if ( flags & MarkupType.Bold )
-                {
+                else if (flags & MarkupType.Bold) {
                     boldStart = index;
                 }
 
-                if ( italicStart !== null )
-                {
-                    if ( !( flags & MarkupType.Italic ) )
-                    {
-                        markups.push( new Markup( italicStart, index, MarkupType.Italic ) );
+                if (italicStart !== null) {
+                    if (!(flags & MarkupType.Italic)) {
+                        markups.push(new Markup(italicStart, index, MarkupType.Italic));
 
                         italicStart = null;
                     }
                 }
-                else if ( flags & MarkupType.Italic )
-                {
+                else if (flags & MarkupType.Italic) {
                     italicStart = index;
                 }
 
-                if ( underlineStart !== null )
-                {
-                    if ( !( flags & MarkupType.Italic ) )
-                    {
-                        markups.push( new Markup( underlineStart, index, MarkupType.Italic ) );
+                if (underlineStart !== null) {
+                    if (!(flags & MarkupType.Italic)) {
+                        markups.push(new Markup(underlineStart, index, MarkupType.Italic));
 
                         underlineStart = null;
                     }
                 }
-                else if ( flags & MarkupType.Underline )
-                {
+                else if (flags & MarkupType.Underline) {
                     underlineStart = index;
                 }
 
